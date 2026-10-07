@@ -1,0 +1,319 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>The Wall</title>
+<style>
+:root{--bg:#040a1c;--ink:#e6efff;--mut:#8aa4dc;--pri:#3b82f6;--cy:#22d3ee;--g:#34d399;--r:#fb7185;--gold:#22d3ee;--line:rgba(96,165,250,.28);--glow:0 0 22px rgba(59,130,246,.55)}
+*{box-sizing:border-box}
+body{margin:0;font-family:"Segoe UI",system-ui,sans-serif;color:var(--ink);min-height:100vh;background:radial-gradient(900px 520px at 8% -10%,rgba(37,99,235,.55),transparent),radial-gradient(800px 520px at 100% 0,rgba(6,182,212,.28),transparent),radial-gradient(700px 500px at 50% 120%,rgba(29,78,216,.4),transparent),var(--bg)}
+a{color:var(--cy)}
+.wrap{max-width:1100px;margin:0 auto;padding:20px}
+.logo{font-size:clamp(34px,7vw,64px);margin:6px 0;font-weight:900;letter-spacing:-2px;background:linear-gradient(90deg,#60a5fa,#22d3ee,#a5b4fc);-webkit-background-clip:text;color:transparent;filter:drop-shadow(0 0 18px rgba(34,211,238,.55))}
+.sub{color:var(--mut);margin:0 0 18px}
+.card{background:linear-gradient(160deg,rgba(18,38,92,.78),rgba(8,18,48,.82));backdrop-filter:blur(10px);border:1px solid var(--line);border-radius:18px;padding:18px;box-shadow:0 0 0 1px rgba(255,255,255,.03) inset,0 10px 40px rgba(2,8,30,.6),0 0 28px rgba(59,130,246,.18);margin-bottom:16px}
+.tabs{display:flex;gap:8px;margin-bottom:16px}
+.tab,.btn{border:0;border-radius:12px;padding:11px 18px;font:700 15px inherit;cursor:pointer;transition:.15s}
+.tab{background:rgba(18,38,92,.6);color:var(--mut);border:1px solid var(--line)}.tab.on{background:linear-gradient(135deg,#2563eb,#06b6d4);color:#fff;box-shadow:var(--glow)}
+.btn{background:linear-gradient(135deg,#2563eb,#0ea5e9);color:#fff;box-shadow:0 0 18px rgba(59,130,246,.55)}
+.btn:hover:not(:disabled){transform:translateY(-1px);box-shadow:0 0 30px rgba(34,211,238,.75)}.btn:disabled{opacity:.35;cursor:not-allowed;box-shadow:none}
+.btn.gold{background:linear-gradient(135deg,#06b6d4,#3b82f6);color:#02112e;box-shadow:0 0 24px rgba(34,211,238,.7);animation:pulse 2.4s infinite}.btn.gold:disabled{animation:none}
+@keyframes pulse{50%{box-shadow:0 0 40px rgba(34,211,238,1)}}
+.btn.ghost{background:rgba(59,130,246,.12);color:#bcd4ff;box-shadow:none;border:1px solid var(--line)}
+input,textarea,select{width:100%;padding:11px 13px;border:1px solid var(--line);border-radius:12px;font:15px inherit;background:rgba(4,10,32,.8);color:var(--ink)}
+input:focus,textarea:focus,select:focus{outline:0;border-color:var(--cy);box-shadow:0 0 14px rgba(34,211,238,.45)}
+textarea{min-height:110px;resize:vertical;font-family:ui-monospace,Consolas,monospace;font-size:13px}
+label{font-weight:700;font-size:13px;color:var(--mut);display:block;margin:10px 0 5px}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}.row>*{flex:1}
+.grid{display:grid;grid-template-columns:1.5fr 1fr;gap:16px}@media(max-width:800px){.grid{grid-template-columns:1fr}}
+.roles{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px}
+.role{cursor:pointer;text-align:left;border:1px solid var(--line);background:linear-gradient(160deg,rgba(18,38,92,.8),rgba(8,18,48,.85));border-radius:18px;padding:20px;font:inherit;color:inherit;box-shadow:0 0 20px rgba(59,130,246,.15)}
+.role:hover{border-color:var(--cy);box-shadow:0 0 34px rgba(34,211,238,.45)}.role h3{margin:6px 0}.role p{margin:0;color:var(--mut);font-size:14px}
+.gem{display:inline-flex;align-items:center;gap:10px;text-decoration:none;color:var(--ink);font-weight:700;background:rgba(59,130,246,.14);border:1px solid var(--line);padding:9px 16px;border-radius:999px;box-shadow:0 0 16px rgba(139,92,246,.35)}
+.code{font:900 54px ui-monospace,Consolas,monospace;letter-spacing:10px;color:#7dd3fc;text-shadow:0 0 22px rgba(34,211,238,.8)}
+.q{font-size:clamp(20px,3.4vw,30px);font-weight:800;margin:6px 0 14px;line-height:1.25}
+.ch{position:relative;overflow:hidden;display:flex;align-items:center;gap:12px;width:100%;text-align:left;margin:8px 0;padding:15px;border:1px solid var(--line);border-radius:14px;background:rgba(6,16,46,.85);font:600 17px inherit;color:var(--ink);cursor:pointer}
+.ch b{width:34px;height:34px;border-radius:10px;display:grid;place-items:center;color:#fff;flex:none;box-shadow:0 0 14px currentColor}
+.ch span{flex:1;z-index:1}.ch em{z-index:1;font-style:normal;font-weight:800;color:var(--mut)}
+.ch i{position:absolute;left:0;top:0;bottom:0;background:rgba(59,130,246,.28);transition:width .3s}
+.c0 b{background:#3b82f6;color:#3b82f6}.c1 b{background:#06b6d4;color:#06b6d4}.c2 b{background:#8b5cf6;color:#8b5cf6}.c3 b{background:#ec4899;color:#ec4899}
+.ch b::before{content:"";}.ch b{color:#fff}
+.ch:hover:not(:disabled){border-color:var(--cy)}
+.ch.on{border-color:var(--cy);box-shadow:0 0 22px rgba(34,211,238,.6)}
+.ch.ok{border-color:var(--g);background:rgba(16,185,129,.16);box-shadow:0 0 22px rgba(52,211,153,.5)}.ch.bad{border-color:var(--r);box-shadow:0 0 18px rgba(251,113,133,.45)}.ch.grp{box-shadow:0 0 0 3px rgba(125,211,252,.55),0 0 26px rgba(125,211,252,.5)}
+.ch:disabled{cursor:default}
+.bank{height:26px;background:rgba(4,10,32,.9);border:1px solid var(--line);border-radius:99px;overflow:hidden}.bank div{height:100%;background:linear-gradient(90deg,#2563eb,#22d3ee);transition:width .8s;border-radius:99px;box-shadow:0 0 18px #22d3ee}
+.big{font-size:34px;font-weight:900;text-shadow:0 0 18px rgba(34,211,238,.6)}.pill{display:inline-block;padding:4px 12px;border-radius:99px;background:rgba(59,130,246,.2);color:#9fc4ff;font-weight:700;font-size:13px;border:1px solid var(--line)}
+.msg{padding:14px;border-radius:14px;font-weight:700;margin:10px 0;border:1px solid transparent}.msg.g{background:rgba(16,185,129,.14);color:#6ee7b7;border-color:rgba(52,211,153,.4);box-shadow:0 0 18px rgba(52,211,153,.2)}.msg.r{background:rgba(244,63,94,.13);color:#fda4af;border-color:rgba(251,113,133,.4);box-shadow:0 0 18px rgba(251,113,133,.18)}.msg.n{background:rgba(59,130,246,.14);color:#bcd4ff;border-color:var(--line)}
+table{width:100%;border-collapse:collapse}td,th{padding:9px;border-bottom:1px solid var(--line);text-align:left;font-size:14px}
+canvas{width:100%;max-width:560px;display:block;margin:0 auto;border-radius:20px;border:1px solid rgba(96,165,250,.5);box-shadow:0 0 50px rgba(37,99,235,.65),0 0 100px rgba(34,211,238,.25)}
+.iso{--pri:#8b5cf6;--line:rgba(167,139,250,.32)}.iso .card{box-shadow:0 10px 40px rgba(2,8,30,.6),0 0 30px rgba(139,92,246,.28)}
+.wallpage{text-align:center}
+.contract{border:2px dashed var(--line);border-radius:18px;padding:18px;margin:10px 0;cursor:pointer;background:rgba(6,16,46,.85);text-align:left;width:100%;font:inherit;color:inherit}
+.contract:hover{border-color:var(--cy);box-shadow:0 0 22px rgba(34,211,238,.4)}.contract.sel{border:2px solid var(--cy);background:rgba(34,211,238,.12);box-shadow:0 0 30px rgba(34,211,238,.6)}
+details summary{cursor:pointer}
+@media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style></head><body><div id="app"></div>
+<script>
+const $=s=>document.querySelector(s),L='ABCD',W=540,H=680,BIN=96,FMS=20,N=9,GW=W/N,SL=[2,.5,.3,.2,.1,.2,.3,.5,2],BONUS=2,PERFECT=27;
+const pt=p=>Math.round(p*10)/10,usd=p=>'$'+Math.round(p*1e5).toLocaleString(),short=p=>p>=10?'$'+p/10+'M':'$'+Math.round(p*100)+'K';
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const EMB=new URLSearchParams(location.search).get('uid'),POP=new URLSearchParams(location.search).get('win');
+const id=EMB||sessionStorage.wid||(sessionStorage.wid=Math.random().toString(36).slice(2,10));
+let wallWin=null,wallOverlay=false,pend=null,role=null,room=null,pname='',ST=null,mine=null,lastQ=-1,anim=null,showWall=false,tab='play',Q=[],S=null,ws=null,bc=null,timer=null;
+
+/* ---------- ball physics (deterministic: every screen replays the same drop) ---------- */
+const PEGS=[];for(let r=0;r<10;r++){const o=r%2?GW/2:0;for(let x=o;x<=W;x+=GW)if(x>8&&x<W-8)PEGS.push([x,100+r*46])}
+function sim(seed,x0){let a=seed>>>0;const R=()=>{a=a+0x6D2B79F5>>>0;let t=a;t=Math.imul(t^t>>>15,t|1);t^=t+Math.imul(t^t>>>7,t|61);return((t^t>>>14)>>>0)/4294967296};
+let x=x0,y=30,vx=(R()-.5)*2,vy=0,slot=-1,enter=-1,rest=0,ang=0;const F=[],hits=[],EY=H-BIN+10,FL=H-8-11;
+for(let i=0;i<4500;i++){vy+=0.17;x+=vx;y+=vy;
+if(slot<0){
+if(x<12){x=12;vx=Math.abs(vx)*.6}if(x>W-12){x=W-12;vx=-Math.abs(vx)*.6}
+for(let k=0;k<PEGS.length;k++){const p=PEGS[k],dx=x-p[0],dy=y-p[1],d=Math.hypot(dx,dy);
+if(d<15&&d>0){const nx=dx/d,ny=dy/d;x=p[0]+nx*15;y=p[1]+ny*15;const dot=vx*nx+vy*ny;
+if(dot<0){hits.push([i,p[0],p[1],Math.min(1,-dot/6)]);vx-=1.6*dot*nx;vy-=1.6*dot*ny;vx=vx*0.72+(R()-.5)*.6;vy*=0.88}}}
+vx*=0.965;if(y>=EY){slot=Math.max(0,Math.min(N-1,Math.floor(x/GW)));enter=i}
+}else{
+const lo=slot*GW+13,hi=(slot+1)*GW-13;
+if(x<lo){x=lo;vx=Math.abs(vx)*.4}if(x>hi){x=hi;vx=-Math.abs(vx)*.4}
+vx*=.96;
+if(y>FL){y=FL;if(Math.abs(vy)>1.3){hits.push([i,x,FL,Math.min(1,Math.abs(vy)/9),1]);vy=-vy*0.72}else vy=0;vx*=.8}
+if(vy==0&&Math.abs(vx)<.05&&y>=FL)rest++;else rest=0;
+if(rest>14)break}
+ang+=vx/10;F.push([x,y,ang])}
+if(slot<0){slot=Math.max(0,Math.min(N-1,Math.floor(x/GW)));enter=F.length-1}
+return{F,hits,slot,enter}}
+function startAnim(m){anim={t0:performance.now()+800,balls:m.balls.map(b=>{const s=sim(b.seed,b.x0);return{F:s.F,hits:s.hits,slot:s.slot,enter:s.enter,ok:b.ok,mult:b.mult||1}})}}
+
+/* ---------- wall drawing: glass bins, glowing pegs, squash-and-stretch ball ---------- */
+let hov=-1;const TIER={2:'#fbbf24',.5:'#a78bfa',.3:'#38bdf8',.2:'#22d3ee',.1:'#34d399'};
+function rr(g,x,y,w,h,r){g.beginPath();g.moveTo(x+r,y);g.arcTo(x+w,y,x+w,y+h,r);g.arcTo(x+w,y+h,x,y+h,r);g.arcTo(x,y+h,x,y,r);g.arcTo(x,y,x+w,y,r);g.closePath()}
+function hv(e){const c=e.target;if(!c||c.id!='wc'){hov=-1;return}const r=c.getBoundingClientRect(),p=e.touches?e.touches[0]:e,x=(p.clientX-r.left)/r.width*W,y=(p.clientY-r.top)/r.height*H;hov=y>=H-BIN-10?Math.max(0,Math.min(N-1,Math.floor(x/GW))):-1}
+['mousemove','touchstart','touchmove','click'].forEach(ev=>addEventListener(ev,hv,{passive:true}));
+function draw(g,t){const TOP=H-BIN,fr=anim?Math.max(0,(t-anim.t0)/FMS):0;
+const bg=g.createLinearGradient(0,0,0,H);bg.addColorStop(0,'#05122f');bg.addColorStop(1,'#0b2a73');g.fillStyle=bg;g.fillRect(0,0,W,H);
+g.strokeStyle='rgba(125,211,252,.12)';g.lineWidth=3;for(let i=1;i<3;i++){g.beginPath();g.moveTo(i*W/3,0);g.lineTo(i*W/3,TOP);g.stroke()}
+g.strokeRect(3,3,W-6,TOP-6);
+const gl=g.createLinearGradient(0,0,W,H);gl.addColorStop(0,'rgba(255,255,255,.12)');gl.addColorStop(.35,'rgba(255,255,255,0)');g.fillStyle=gl;g.fillRect(0,0,W,TOP);
+g.shadowColor='#38bdf8';g.shadowBlur=14;g.fillStyle='#bae6fd';for(const p of PEGS){g.beginPath();g.arc(p[0],p[1],5,0,7);g.fill()}g.shadowBlur=0;
+if(anim)anim.balls.forEach(b=>{const i=Math.min(Math.floor(fr),b.F.length-1);b.hits.forEach(h=>{const age=i-h[0],fl=h.length>4;
+if(age>=0&&age<(fl?18:12)){const k=1-age/(fl?18:12);g.strokeStyle='rgba(165,243,252,'+k+')';g.lineWidth=2;g.beginPath();if(fl)g.ellipse(h[1],h[2]+4,8+age*3,3+age*.8,0,0,7);else g.arc(h[1],h[2],6+age*1.7,0,7);g.stroke();
+if(!fl){g.fillStyle='rgba(255,255,255,'+k+')';g.beginPath();g.arc(h[1],h[2],5,0,7);g.fill()}}})});
+SL.forEach((v,i)=>{const c=TIER[v],h=hov==i;let glow=h?1:0;const pulse=v==2?.2+.2*Math.sin(t/350+i):0;
+if(anim)anim.balls.forEach(b=>{if(b.slot==i){const dt=t-(anim.t0+b.enter*FMS);if(dt>0)glow=Math.max(glow,Math.max(0,1-dt/2200))}});
+const lift=h?6:0;g.save();g.shadowColor=c;g.shadowBlur=8+22*Math.min(1,glow+pulse);
+const gr=g.createLinearGradient(0,TOP,0,H);gr.addColorStop(0,c+'66');gr.addColorStop(1,c+'14');
+rr(g,i*GW+3,TOP-lift,GW-6,BIN-6+lift,10);g.fillStyle=gr;g.fill();g.globalAlpha=glow*.3;g.fillStyle=c;g.fill();
+g.globalAlpha=.5+.5*Math.min(1,glow+pulse);g.lineWidth=2;g.strokeStyle=c;g.stroke();g.restore();
+g.textAlign='center';g.fillStyle='#fff';g.font='900 15px Segoe UI,sans-serif';g.fillText(short(v),i*GW+GW/2,TOP+24-lift);g.fillStyle=c;g.font='700 11px Segoe UI,sans-serif';g.fillText(v+(v==1?' pt':' pts'),i*GW+GW/2,TOP+40-lift)});
+if(anim){anim.balls.forEach(b=>{const i=Math.min(Math.floor(fr),b.F.length-1),f=b.F[i],pf=b.F[Math.max(0,i-1)],vy=f[1]-pf[1],air=i<b.enter;
+const c=b.ok?['#dcfce7','#22e08a','#047857']:['#fee2e2','#ff4d4d','#991b1b'];
+if(air)for(let k=7;k>=1;k--){const q=b.F[Math.max(0,i-k*2)];g.globalAlpha=.06*(8-k);g.fillStyle=c[1];g.beginPath();g.arc(q[0],q[1],9,0,7);g.fill()}g.globalAlpha=1;
+if(f[1]>TOP){const near=Math.max(0,1-(H-19-f[1])/90);g.fillStyle='rgba(0,0,0,'+.4*near+')';g.beginPath();g.ellipse(f[0],H-8,12-near*3+ (1-near)*4,3,0,0,7);g.fill()}
+let sx=1,sy=1,last=null;for(const h of b.hits)if(h[0]<=i)last=h;
+if(last&&i-last[0]<7){const sq=(1-(i-last[0])/7)*last[3]*.3;sx=1+sq;sy=1-sq}else if(air){sy=1+Math.min(Math.abs(vy)*.02,.18);sx=1/sy}
+g.save();g.translate(f[0],f[1]);g.scale(sx,sy);const rg=g.createRadialGradient(-4,-4,2,0,0,12);rg.addColorStop(0,c[0]);rg.addColorStop(.5,c[1]);rg.addColorStop(1,c[2]);
+g.shadowColor=c[1];g.shadowBlur=22;g.fillStyle=rg;g.beginPath();g.arc(0,0,11,0,7);g.fill();g.shadowBlur=0;
+g.save();g.rotate(f[2]);g.strokeStyle='rgba(255,255,255,.55)';g.lineWidth=2;g.beginPath();g.arc(0,0,7,.2,1.7);g.stroke();g.restore();
+g.fillStyle='rgba(255,255,255,.75)';g.beginPath();g.arc(-4,-5,2.4,0,7);g.fill();g.restore();
+if(i>=b.enter){const dt=t-(anim.t0+b.enter*FMS);if(dt>0&&dt<2200){g.globalAlpha=Math.max(0,1-dt/2200);g.textAlign='center';g.font='900 22px Segoe UI,sans-serif';g.fillStyle=b.ok?'#4ade80':'#fb7185';
+g.fillText((b.ok?'+':'−')+pt(SL[b.slot]*b.mult)+(b.mult>1?' ×'+b.mult:''),b.slot*GW+GW/2,TOP-10-dt*.028);g.globalAlpha=1}}})}
+if(hov>=0){const v=SL[hov],bw=150,bx=Math.max(4,Math.min(W-bw-4,hov*GW+GW/2-bw/2)),by=TOP-70;g.save();g.shadowColor=TIER[v];g.shadowBlur=16;rr(g,bx,by,bw,48,10);g.fillStyle='rgba(4,10,32,.95)';g.fill();g.strokeStyle=TIER[v];g.lineWidth=2;g.stroke();g.restore();
+g.textAlign='center';g.fillStyle='#fff';g.font='900 16px Segoe UI,sans-serif';g.fillText(usd(v),bx+bw/2,by+21);g.fillStyle=TIER[v];g.font='700 12px Segoe UI,sans-serif';g.fillText(v+(v==1?' point':' points')+' per ball',bx+bw/2,by+38)}}
+function loop(t){const c=$('#wc');if(c){if(c.width!=W){c.width=W;c.height=H}draw(c.getContext('2d'),t)}requestAnimationFrame(loop)}requestAnimationFrame(loop);
+
+/* ---------- network: WebSocket (offline LAN server) or BroadcastChannel (same-browser fallback) ---------- */
+function open_(code){if(EMB||POP){addEventListener('message',e=>{if(e.data&&e.data.wallmsg)recv(e.data.wallmsg)});return Promise.resolve()}
+return new Promise(res=>{
+const fb=()=>{bc=new BroadcastChannel('wall-'+code);bc.onmessage=e=>recv(e.data);res()};
+if(location.protocol.startsWith('http')){try{ws=new WebSocket((location.protocol=='https:'?'wss://':'ws://')+location.host);
+ws.onopen=()=>{ws.send(JSON.stringify({t:'hello',room:code}));res()};ws.onmessage=e=>recv(JSON.parse(e.data));ws.onerror=()=>{ws=null;fb()}}catch(e){fb()}}else fb()})}
+const send=o=>{if(wallWin&&!wallWin.closed)wallWin.postMessage({wallmsg:o},'*');if(POP)opener&&opener.postMessage({wallmsg:o},'*');else if(EMB)parent.postMessage({wallmsg:o},'*');else if(ws&&ws.readyState==1)ws.send(JSON.stringify(o));else if(bc)bc.postMessage(o)};
+const recv=m=>role=='host'?hostRecv(m):clientRecv(m);
+
+/* ---------- host brain: the show's stages ---------- */
+function buildSteps(n){const r2=Math.min(3,Math.max(1,Math.floor(n/2))),r3=Math.max(1,n-r2),st=[];
+st.push({t:'intro',round:1,title:'Round 1 · Free Fall',sub:'Four green balls fall one at a time. No questions yet. Everyone watches the wall together.'});
+for(let i=0;i<4;i++)st.push({t:'free',ok:true,label:'Free Fall · ball '+(i+1)+' of 4',ffEnd:i==3});
+st.push({t:'intro',round:2,title:'Round 2 · Isolation',sub:'The isolated student enters the booth and can no longer see the wall. A SuperDrop of 5 green balls opens the round, then '+r2+' questions. Red balls follow.'});
+st.push({t:'multi',ok:true,cols:[0,2,4,6,8],label:'SuperDrop · 5 green balls at once'});
+for(let i=0;i<r2;i++)st.push({t:'q',mult:1,label:'Round 2 · question '+(i+1)+' of '+r2});
+st.push({t:'multi',ok:false,cols:[2,6],label:'Red Drop · 2 red balls at once',th:.3,group:'r2red'});
+st.push({t:'intro',round:3,title:'Round 3 · The Final Climb',sub:'Four green balls, then '+r3+' questions. The last one is the Money Ball (x2). Four red balls fall from the same columns as the green ones.'});
+for(let i=0;i<4;i++)st.push({t:'free',ok:true,zone:i,label:'Round 3 · green ball '+(i+1)+' of 4'});
+for(let i=0;i<r3;i++)st.push({t:'q',mult:i==r3-1?2:1,label:'Round 3 · question '+(i+1)+' of '+r3+(i==r3-1?' · MONEY BALL x2':'')});
+for(let i=0;i<4;i++)st.push(Object.assign({t:'free',ok:false,useZone:i,label:'Red ball '+(i+1)+' of 4 (same column as green '+(i+1)+')'},i==0?{th:.5,group:'r3red'}:{group:'r3red'}));
+st.push({t:'contract'});return st}
+const guar=()=>pt(Math.min(30,S.ff+BONUS*S.correct));
+function newGame(){S={phase:'lobby',round:0,title:'',sub:'',steps:buildSteps(Q.length),si:-1,qi:0,mult:1,zones:{},ff:0,correct:0,note:'',players:S?S.players:{},votes:{},isoVote:null,bank:0,raw:0,res:null,last:null,contract:null,final:null,room};
+Object.values(S.players).forEach(p=>p.score=0)}
+function pub(){const q=S.qi&&Q[S.qi-1],counts=[0,0,0,0];Object.values(S.votes).forEach(v=>counts[v]++);
+const st=Object.values(S.players).filter(p=>p.role=='stage').length,cs=S.steps[S.si]||{},end=S.phase=='end';
+return{room,phase:S.phase,round:S.round,title:S.title,sub:S.sub,kind:cs.t,label:cs.label||'',mult:S.mult,note:S.note,qi:S.qi,total:Q.length,players:S.players,counts:S.phase=='question'?[0,0,0,0]:counts,sv:Object.keys(S.votes).length,st,isoDone:S.isoVote!=null,
+q:q?{q:q.q,c:q.c,a:['revealed','dropping','dropped'].includes(S.phase)?q.a:undefined}:null,res:S.res,bank:S.bank,reserve:pt(Math.max(0,S.raw-30)),last:S.last,cdone:!!S.contract,
+guar:S.phase=='contract'||end?guar():null,contract:end?S.contract:null,final:S.final,jp:end&&!!S.jackpot}}
+function bcast(){ST=pub();send({t:'state',s:ST});render()}
+function hostRecv(m){const p=S.players[m.id];
+if(m.t=='join'){if(m.role=='iso'&&Object.keys(S.players).some(k=>k!=m.id&&S.players[k].role=='iso')){send({t:'deny',id:m.id,msg:'The isolated seat is already taken.'});return}
+S.players[m.id]=p||{name:m.name,role:m.role,score:0};S.players[m.id].name=m.name}
+else if(m.t=='vote'&&S.phase=='question'&&p&&p.role=='stage')S.votes[m.id]=m.c;
+else if(m.t=='iso'&&S.phase=='question'&&p&&p.role=='iso')S.isoVote=m.c;
+else if(m.t=='contract'&&S.phase=='contract'&&p&&p.role=='iso')S.contract=m.c||null;
+bcast()}
+function advance(){S.si++;const st=S.steps[S.si];S.last=null;S.res=null;
+if(st.th!==undefined&&S.raw<st.th){S.raw=0;S.bank=0;S.note='The bank was too small for the red balls, so they were skipped and the bank is now 0.';
+while(S.steps[S.si+1]&&S.steps[S.si+1].group==st.group)S.si++;return advance()}
+if(st.t=='intro'){S.round=st.round;S.title=st.title;S.sub=st.sub;S.phase='intro'}
+else if(st.t=='free'||st.t=='multi')S.phase='ballready';
+else if(st.t=='q'){S.qi++;S.mult=st.mult;S.phase='question';S.votes={};S.isoVote=null}
+else if(st.t=='contract')S.phase='contract';
+bcast();if(st.t!='intro')S.note=''}
+function reveal(){const q=Q[S.qi-1],cnt=[0,0,0,0];Object.values(S.votes).forEach(v=>cnt[v]++);const mx=Math.max(...cnt);
+let pick=null;if(mx>0){const t=cnt.map((n,i)=>n==mx?i:-1).filter(i=>i>=0);pick=t[Math.floor(Math.random()*t.length)]}
+Object.entries(S.votes).forEach(([k,v])=>{if(v==q.a)S.players[k].score++});
+const iso=Object.values(S.players).find(p=>p.role=='iso');let isoOk=null;
+if(iso&&S.isoVote!=null){isoOk=S.isoVote==q.a;if(isoOk)iso.score++}
+const ok=pick==q.a;S.res={pick,ok,isoOk,bonus:ok?BONUS:0};if(ok){S.correct++;S.raw=pt(S.raw+BONUS);S.bank=Math.min(30,S.raw)}S.phase='revealed';bcast()}
+function dropBalls(list){const base=Date.now()%1e9,balls=list.map((b,i)=>({seed:base+i*7919,x0:(b.col+.5)*GW,ok:b.ok,mult:b.mult||1})),sims=balls.map(b=>sim(b.seed,b.x0));
+S.phase='dropping';send({t:'drop',balls});startAnim({balls});bcast();
+setTimeout(()=>{S.last=sims.map((x,i)=>{const d=pt(SL[x.slot]*balls[i].mult);S.raw=Math.max(0,pt(S.raw+(balls[i].ok?d:-d)));S.bank=Math.min(30,S.raw);return{ok:balls[i].ok,slot:x.slot,pts:d}});
+if(S.steps[S.si].ffEnd)S.ff=S.bank;S.phase='dropped';bcast()},Math.max(...sims.map(x=>x.F.length))*FMS+1800)}
+function dropStep(){const st=S.steps[S.si];if(st.t=='multi')return dropBalls(st.cols.map(c=>({col:c,ok:st.ok})));
+const col=st.useZone!==undefined?S.zones[st.useZone]:+$('#col').value;if(st.zone!==undefined)S.zones[st.zone]=col;dropBalls([{col,ok:st.ok}])}
+function setC(c){S.contract=c;bcast()}
+function dropQ(){dropBalls([{col:+$('#col').value,ok:S.res.ok,mult:S.mult}])}
+function finish(){S.final=S.contract=='sign'?guar():S.bank;S.jackpot=S.final>=PERFECT;if(S.jackpot)S.final=30;S.phase='end';
+const h=JSON.parse(localStorage.wallHist||'[]');
+h.unshift({date:new Date().toLocaleString(),room,group:S.final,bank:S.bank,guar:guar(),contract:S.contract,players:Object.values(S.players).filter(p=>p.role!='wall').map(p=>({name:p.name,role:p.role,score:p.score}))});
+localStorage.wallHist=JSON.stringify(h);bcast()}
+
+/* ---------- client ---------- */
+function clientRecv(m){
+if(m.t=='state'){ST=m.s;if(ST.qi!=lastQ){lastQ=ST.qi;mine=null}if(ST.phase!='contract')pend=null;render()}
+else if(m.t=='drop')startAnim(m);
+else if(m.t=='deny'&&m.id==id){alert(m.msg);location.reload()}}
+const joinMsg=()=>({t:'join',id,name:pname,role});
+function pickC(c){pend=c;render()}
+function confirmC(){if(!pend)return;send({t:'contract',id,c:pend});render()}
+function clearC(){pend=null;send({t:'contract',id,c:null});render()}
+function vote(c){mine=c;send({t:role=='iso'?'iso':'vote',id,c});render()}
+
+/* ---------- screens ---------- */
+function gemPrompt(){const t=($('#pt')||{}).value||'[topic]',g=($('#pg')||{}).value||'[grade level]',n=($('#pn')||{}).value||'10';
+return`Create ${n} multiple-choice questions about ${t} for ${g} students. Each question must have exactly 4 choices and only one correct answer. Return ONLY a valid JSON array with no markdown and no extra text, in this exact format:
+[{"q":"Question text","c":["Choice A","Choice B","Choice C","Choice D"],"a":0}]
+"a" is the index (0-3) of the correct choice. Mix the position of correct answers.`}
+function upPrompt(){$('#prompt').value=gemPrompt()}
+const SAMPLE=[{q:"What is 12 × 12?",c:["122","144","124","148"],a:1},{q:"Which planet is known as the Red Planet?",c:["Venus","Jupiter","Mars","Mercury"],a:2},{q:"What gas do plants absorb for photosynthesis?",c:["Oxygen","Nitrogen","Hydrogen","Carbon dioxide"],a:3},{q:"What is the square root of 81?",c:["9","8","7","11"],a:0},{q:"Water boils at what temperature at sea level?",c:["90°C","100°C","110°C","120°C"],a:1},{q:"How many sides does a hexagon have?",c:["5","6","7","8"],a:1}];
+function home(){
+const hist=JSON.parse(localStorage.wallHist||'[]');
+$('#app').innerHTML=`<div class=wrap><div class=logo>THE WALL</div><p class=sub>Classroom game show · $3,000,000 = 30 points (1 point = $100,000) · works on your own WiFi hotspot · <a href="?test=1">Open the test lab</a></p>
+<div class=tabs><button class="tab ${tab=='play'?'on':''}" onclick="tab='play';home()">Room</button><button class="tab ${tab=='hist'?'on':''}" onclick="tab='hist';home()">History</button></div>
+${tab=='play'?`<div class=grid><div class=card><h2 style="margin-top:0">Create a room</h2>
+<div class=row><a class=gem href="https://gemini.google.com/app" target=_blank rel=noopener><svg width=26 height=26 viewBox="0 0 28 28"><defs><linearGradient id=gg x1=0 y1=0 x2=1 y2=1><stop offset=0 stop-color="#4285f4"/><stop offset=.5 stop-color="#9b72cb"/><stop offset=1 stop-color="#d96570"/></linearGradient></defs><path fill="url(#gg)" d="M14 0C14 7.7 7.7 14 0 14c7.7 0 14 6.3 14 14 0-7.7 6.3-14 14-14-7.7 0-14-6.3-14-14z"/></svg>Open Gemini</a></div>
+<div class=row><div><label>Topic</label><input id=pt value="Grade 7 Science: Cells" oninput=upPrompt()></div><div><label>Grade level</label><input id=pg value="Grade 7" oninput=upPrompt()></div><div><label>How many</label><input id=pn type=number value=10 oninput=upPrompt()></div></div>
+<label>Prompt to paste in Gemini</label><textarea id=prompt readonly></textarea>
+<button class="btn ghost" style="margin-top:8px" onclick="navigator.clipboard.writeText($('#prompt').value);this.textContent='Copied!'">Copy prompt</button>
+<label>Paste Gemini's JSON questions here</label><textarea id=qs placeholder='[{"q":"...","c":["A","B","C","D"],"a":0}]'></textarea>
+<div class=row style="margin-top:10px"><button class="btn ghost" onclick="$('#qs').value=JSON.stringify(SAMPLE)">Use sample questions</button><button class="btn gold" onclick=create()>Create room</button></div></div>
+<div class=card><h2 style="margin-top:0">Join a room</h2><label>Room code</label><input id=jc maxlength=4 style="text-transform:uppercase;font-size:28px;font-weight:900;letter-spacing:8px;text-align:center" value="${new URLSearchParams(location.search).get('room')||''}">
+<button class=btn style="width:100%;margin-top:12px" onclick="roleScreen($('#jc').value.trim().toUpperCase())">Join</button></div></div>`
+:`<div class=card><div class=row><h2 style="margin:0">Game history</h2><button class="btn ghost" style="flex:none" onclick="if(confirm('Clear all history?')){localStorage.wallHist='[]';home()}">Clear</button></div>
+${hist.length?hist.map(h=>`<details style="margin-top:12px"><summary style="cursor:pointer;font-weight:700">${esc(h.date)} · Room ${h.room} · Group: ${pt(h.group)} pts (${usd(h.group)}) <span class=pill>${h.contract=='sign'?'Signed the contract':'Tore up the contract'}</span></summary>
+<table><tr><th>Student (real name)</th><th>Seat</th><th>Individual score</th></tr>${h.players.map(p=>`<tr><td>${esc(p.name)}</td><td>${p.role=='iso'?'Isolated':'Stage'}</td><td>${p.score}</td></tr>`).join('')}</table></details>`).join(''):'<p class=sub>No games saved yet. Finished games appear here with date and real names.</p>'}</div>`}</div>`;
+if(tab=='play')upPrompt()}
+function create(){let q;try{q=JSON.parse($('#qs').value.replace(/```json|```/g,'').trim());
+if(!Array.isArray(q)||!q.length||q.some(x=>!x.q||!Array.isArray(x.c)||x.c.length!=4||!(x.a>=0&&x.a<4)))throw 0}catch(e){alert('Questions must be a JSON array: each item needs q, c (4 choices) and a (0-3). Tap "Use sample questions" to see the format.');return}
+const code=Math.random().toString(36).slice(2,6).toUpperCase().replace(/[O0I1L]/g,'X');localStorage['wallQ-'+code]=JSON.stringify(q);roleScreen(code)}
+function roleScreen(code){if(code.length!=4){alert('Enter the 4-letter room code.');return}room=code;
+$('#app').innerHTML=`<div class=wrap><div class=logo>THE WALL</div><p class=sub>Room</p><div class=code>${code}</div>
+<div class=card><label>Your real name (students only)</label><input id=nm placeholder="First and last name"></div>
+<div class=roles><button class=role onclick="pick('host')"><div style="font-size:34px">🎛️</div><h3>Host (teacher)</h3><p>Control panel. Starts questions, drops the ball, opens the wall window.</p></button>
+<button class=role onclick="pick('stage')"><div style="font-size:34px">🧱</div><h3>Student on stage</h3><p>Answer together with classmates. The most-picked choice becomes the group answer.</p></button>
+<button class=role onclick="pick('iso')"><div style="font-size:34px">🔒</div><h3>Isolated student</h3><p>Answers alone, can't see the wall, and signs the blind contract.</p></button></div></div>`}
+async function pick(r,n){pname=n||(($('#nm')||{}).value?.trim()||'');
+if(r!='host'&&pname.length<2){alert('Please type your real name first.');return}
+role=r;await open_(room);
+if(r=='host'){Q=JSON.parse(localStorage['wallQ-'+room]||'null')||(EMB?SAMPLE:null);if(!Q){alert('This device has no questions for room '+room+'. Create the room on this device.');location.reload();return}
+S=null;newGame();bcast();return}
+send(joinMsg());timer=setInterval(()=>{if(!ST||(role!='wall'&&!ST.players[id]))send(joinMsg())},2000);render()}
+
+const bankBar=(b,r)=>`<div class=bank><div style="width:${b/30*100}%"></div></div><div class=row style="margin-top:6px"><b>${pt(b)} pts</b><b style="text-align:right">${usd(b)} / ${usd(30)}</b></div>${r>0?`<div class=sub style="margin:6px 0 0">🛡️ Overflow reserve +${pt(r)} pts: red balls deduct from this first.</div>`:''}`;
+const endPanel=P=>`<div class="msg g" style="text-align:center">${P.jp?'<div class=big>🏆 PERFECT WALL! 🏆</div><div>The $3,000,000 jackpot is won!</div>':''}<div>${P.contract=='sign'?'✍️ The contract was SIGNED':'✂️ The contract was TORN UP'}</div><div class=big>${pt(P.final)} pts</div><div>${usd(P.final)}</div><div class=sub style="margin:8px 0 0">Guaranteed payout: ${pt(P.guar)} pts · Wall bank: ${pt(P.bank)} pts</div></div>`;
+const net=l=>pt(l.reduce((a,b)=>a+(b.ok?b.pts:-b.pts),0)),netMsg=P=>P.last?`<div class="msg ${net(P.last)>=0?'g':'r'}">${P.last.length>1?P.last.length+' balls landed':'Ball landed on '+P.last[0].pts+' pts'}: bank ${net(P.last)>=0?'+':'−'}${Math.abs(net(P.last))} pts (${usd(Math.abs(net(P.last)))})</div>`:'';
+const choices=(P,iso)=>P.q.c.map((t,i)=>{const n=P.counts[i]||0,tot=Math.max(1,P.sv),a=P.q.a,
+cl=`ch c${i} ${mine===i?'on':''} ${a!==undefined?(i==a?'ok':(mine===i?'bad':'')):''} ${!iso&&P.res&&P.res.pick===i?'grp':''}`;
+return`<button class="${cl}" ${P.phase=='question'?'':'disabled'} onclick="vote(${i})"><b>${L[i]}</b><span>${esc(t)}</span>${iso||P.phase=='question'?'':`<i style="width:${n/tot*100}%"></i><em>${n}</em>`}</button>`}).join('');
+const ovl=P=>wallOverlay?`<div style="position:fixed;inset:0;z-index:50;background:rgba(2,6,23,.94);overflow:auto;padding:14px"><div style="max-width:600px;margin:0 auto;text-align:center"><div class=row style="margin-bottom:10px"><b style="font-size:18px">THE WALL · ${esc(P.label||P.title||'')}</b><button class="btn ghost" style="flex:none" onclick="wallOverlay=false;render()">✕ Close</button></div><canvas id=wc></canvas><div class=card style="margin-top:14px">${bankBar(P.bank,P.reserve)}${P.phase=='dropped'?netMsg(P):''}</div></div></div>`:'';
+function render(){if(!role||role=='home')return;const P=ST;if(!P){$('#app').innerHTML='<div class=wrap><div class=card>Connecting to room '+room+'… make sure the host has opened the room.</div></div>';return}
+$('#app').innerHTML=(role=='host'?hostUI(P):role=='stage'?stageUI(P):role=='iso'?isoUI(P):wallUI(P))+(role=='stage'?ovl(P):'')}
+
+function hostUI(P){const st=S.steps[S.si]||{},ph=P.phase,lc=[0,0,0,0];Object.values(S.votes).forEach(v=>lc[v]++);
+const ps=Object.entries(P.players).filter(([k,p])=>p.role!='wall'),nx=S.steps[S.si+1];
+const url=location.protocol.startsWith('http')?location.origin+'/?room='+room:'(open this file/URL on student devices)';
+const colSel=f=>`<label>Drop column</label><select id=col ${f!=null?'disabled':''}>${SL.map((v,i)=>`<option value=${i} ${(f!=null?f==i:i==4)?'selected':''}>Column ${i+1}</option>`).join('')}</select><br><br>`;
+let ctl=S.note&&ph!='intro'?`<div class="msg r">${esc(S.note)}</div>`:'';
+if(ph=='lobby')ctl+=`<p>Round 1 Free Fall, Round 2 Isolation, Round 3 Final Climb, then the contract. Finish with ${PERFECT}+ points (${usd(PERFECT)}) and the wall pays the full $3,000,000 jackpot.</p><button class="btn gold" onclick=advance()>Start the game</button>`;
+if(ph=='intro')ctl+=`<div class="msg n"><b>${esc(P.title)}</b><br>${esc(P.sub)}</div>${S.note?`<div class="msg r">${esc(S.note)}</div>`:''}<button class="btn gold" onclick=advance()>Begin</button>`;
+if(ph=='ballready'){const f=st.t=='free'&&st.useZone!==undefined?S.zones[st.useZone]:null;
+ctl+=`<div class="msg n"><b>${esc(P.label)}</b>${st.t=='multi'?'<br>Balls fall together from columns '+st.cols.map(c=>c+1).join(', '):''}</div>${st.t=='free'?colSel(f):''}<button class="btn gold" onclick=dropStep()>Drop ${st.ok?'green':'red'} ball${st.t=='multi'?'s':''}</button>`}
+if(ph=='question')ctl+=`<p><b>${P.sv}/${P.st}</b> stage students answered · isolated: <b>${P.isoDone?'answered':'waiting'}</b></p><button class="btn gold" onclick=reveal()>Lock answers & reveal</button>`;
+if(ph=='revealed')ctl+=`<div class="msg ${P.res.ok?'g':'r'}">${P.res.pick==null?'Nobody answered':'Group picked '+L[P.res.pick]}: ${P.res.ok?'CORRECT → +'+BONUS+' pts ('+usd(BONUS)+') for the group + a green ball':'WRONG → red ball'}${S.mult>1?' · MONEY BALL x'+S.mult:''}</div>${colSel(null)}<button class="btn gold" onclick=dropQ()>Drop the ball</button>`;
+if(ph=='dropping')ctl+=`<button class=btn disabled>Falling…</button>`;
+if(ph=='dropped')ctl+=`${netMsg(P)}<button class="btn gold" onclick=advance()>${nx&&nx.t=='contract'?'Go to the contract':'Next'}</button>`;
+if(ph=='contract')ctl+=`<div class="msg n">The isolated student is deciding. Guaranteed payout if signed: <b>${P.guar} pts (${usd(P.guar)})</b> = Free Fall ${pt(S.ff)} + ${BONUS} per correct group answer (${S.correct}). Tearing it up keeps the wall bank: <b>${pt(S.bank)} pts</b>${S.bank>=PERFECT?' · that is a PERFECT WALL: the full 30 pts ($3,000,000) jackpot!':''}.</div><p>${P.cdone?'✅ The isolated student has decided.':'⏳ Waiting for the isolated student…'}</p><button class="btn gold" ${P.cdone?'':'disabled'} onclick=finish()>Reveal the contract decision</button>${P.cdone?'':`<p class=sub>No isolated student, or the connection dropped? Decide for them:</p><button class="btn ghost" onclick="setC('sign')">Sign it</button> <button class="btn ghost" onclick="setC('tear')">Tear it up</button>`}`;
+if(ph=='end')ctl+=`${endPanel(P)}<button class="btn ghost" onclick="newGame();bcast()">New game, same class</button> <button class=btn onclick="home_()">Saved! Back to home</button>`;
+const cur=ph=='contract'||ph=='end'?3:P.round-1,chips=['Free Fall','Round 2','Round 3','Contract'].map((t,i)=>`<span class=pill style="${i==cur?'background:var(--pri);color:#fff':i<cur?'background:rgba(52,211,153,.2);color:#6ee7b7':''}">${t}</span>`).join(' ');
+return`<div class=wrap><div class=row><div><div class=code style="font-size:40px">${room}</div><div class=sub>Students join at ${esc(url)}</div></div>
+<button class="btn" style="flex:none" onclick="openWall()">🪟 Pop out the Wall</button></div><div style="margin-bottom:12px">${chips}</div>
+<div class=grid><div><div class=card><span class=pill>${esc(P.label||P.title||'Lobby')}</span>${P.kind=='q'&&P.q?`<div class=q>${esc(P.q.q)}</div>${P.q.c.map((t,i)=>`<div class="ch c${i} ${Q[P.qi-1].a==i?'ok':''}"><b>${L[i]}</b><span>${esc(t)}</span><i style="width:${lc[i]/Math.max(1,P.sv)*100}%"></i><em>${lc[i]}</em></div>`).join('')}<small class=sub>Green = correct answer, counts = live votes. Only you see this until you reveal.</small>`:'<div class=q>'+(ph=='lobby'?'Ready when you are.':esc(P.title||P.label))+'</div>'}</div>
+<div class=card><h3 style="margin-top:0">Control panel</h3>${ctl}</div></div>
+<div><div class=card><h3 style="margin-top:0">Live Wall</h3><canvas id=wc></canvas><div style="margin-top:12px">${bankBar(P.bank,P.reserve)}</div></div>
+<div class=card><h3 style="margin-top:0">Students (${ps.length})</h3>${ps.length?`<table>${ps.map(([k,p])=>`<tr><td>${esc(p.name)}</td><td>${p.role=='iso'?'🔒':'🧱'}</td><td><b>${p.score}</b> pts</td></tr>`).join('')}</table>`:'<p class=sub>Waiting for students to join…</p>'}</div></div></div></div>`}
+function home_(){role=null;ST=null;S=null;clearInterval(timer);home()}
+
+const wallBox=P=>showWall?`<div class=card><canvas id=wc></canvas><div style="margin-top:12px">${bankBar(P.bank,P.reserve)}</div></div>`:'';
+const banner=P=>`<div class="msg n"><b style="font-size:20px">${esc(P.title)}</b><br>${esc(P.sub)}</div>`;
+const ballInfo=P=>`<div class="msg n"><b>${esc(P.label)}</b><br>${P.phase=='ballready'?'Get ready, the host is about to drop.':P.phase=='dropping'?'Falling…':'Landed.'}</div>${P.phase=='dropped'?netMsg(P):''}`;
+function stageUI(P){const me=P.players[id]||{score:0},ph=P.phase;let body='';
+if(ph=='lobby')body=`<div class="msg n">You're in! Waiting for the host to start. 🎉</div>`;
+else if(ph=='intro')body=banner(P);
+else if(ph=='end')body=`${endPanel(P)}<div class="msg n">Your individual score: <b>${me.score}</b></div>`;
+else if(ph=='contract')body=`<div class="msg n">The isolated classmate is deciding on the contract…<br>Your bank on the wall: <b>${pt(P.bank)} pts</b></div>`;
+else if(P.kind!='q')body=ballInfo(P);
+else body=`<span class=pill>${esc(P.label)}</span><div class=q>${esc(P.q.q)}</div>${choices(P,false)}
+${ph=='question'?`<div class="msg n">Pick an answer. The choice with the most votes becomes the group's answer. Vote counts appear after the host reveals. ${P.sv}/${P.st} voted.</div>`:''}
+${P.res?`<div class="msg ${P.res.ok?'g':'r'}">${P.res.pick==null?'No votes':'Group answer: '+L[P.res.pick]} — ${P.res.ok?'Correct! 🟢 +'+pt(P.res.bonus)+' pts ('+usd(P.res.bonus)+') for the group':'Wrong 🔴'}${mine!=null&&P.q.a!==undefined?` · You were ${mine==P.q.a?'right ✔':'wrong ✘'}`:''}</div>`:''}
+${ph=='dropped'?netMsg(P):''}`;
+return`<div class=wrap><div class=row><div><b style="font-size:20px">${esc(pname)}</b><div class=sub>Room ${room} · stage</div></div><div class=big style="text-align:right;flex:none">⭐ ${me.score}</div></div>
+<div class=card>${body}</div><button class="btn" style="width:100%" onclick="wallOverlay=true;render()">🪟 View the Wall</button></div>`}
+function isoUI(P){const me=P.players[id]||{score:0},ph=P.phase,inBooth=P.round>=2;let body='';
+if(ph=='lobby')body=`<div class="msg n">You are the isolated student. In Round 1 you watch the Wall with your team. In Round 2 you enter the booth. 🔒</div>`;
+else if(!inBooth&&ph!='contract'&&ph!='end')body=(ph=='intro'?banner(P):ballInfo(P))+`<canvas id=wc></canvas><div style="margin-top:12px">${bankBar(P.bank,P.reserve)}</div>`;
+else if(ph=='intro')body=banner(P)+`<div class="msg n">🔒 You are in the isolation booth. The Wall is hidden from you.</div>`;
+else if(ph=='contract')body=P.cdone?`<div class="msg g">✅ Your decision is in. Waiting for the host to reveal it…</div><button class="btn ghost" onclick="clearC()">Change my decision</button>`:`<h2 style="margin-top:0">The contract</h2><p>You cannot see the bank on the Wall. Pick one, then confirm.</p>
+<button class="contract ${pend=='sign'?'sel':''}" onclick="pickC('sign')"><b style="font-size:20px">✍️ Sign it</b><br>Give up the wall bank and take the guaranteed payout: <b>${P.guar} pts (${usd(P.guar)})</b>.</button>
+<button class="contract ${pend=='tear'?'sel':''}" onclick="pickC('tear')"><b style="font-size:20px">✂️ Tear it up</b><br>Keep whatever the Wall bank is. It could be more, or less.</button>
+<button class="btn gold" style="width:100%" ${pend?'':'disabled'} onclick="confirmC()">Confirm my decision</button>`;
+else if(ph=='end')body=`${endPanel(P)}<div class="msg n">Your individual score: <b>${me.score}</b></div>`;
+else if(P.kind!='q')body=`<div class="msg n">🔒 The balls are falling, but you can't see. Wait for the next question.</div>`;
+else body=`<span class=pill>${esc(P.label)}</span><div class=q>${esc(P.q.q)}</div>${choices(P,true)}
+${ph=='question'?`<div class="msg n">${mine==null?'Choose your own answer. Nobody can see it.':'Answer locked in. Wait for the host.'}</div>`:''}
+${P.res&&P.res.isoOk!=null?`<div class="msg ${P.res.isoOk?'g':'r'}">${P.res.isoOk?'You got it right! +1':'Not this time.'}</div>`:P.res?'<div class="msg r">No answer submitted.</div>':''}`;
+return`<div class="wrap iso"><div class=row><div><b style="font-size:20px">${esc(pname)}</b><div class=sub>Room ${room} · isolated seat</div></div><div class=big style="text-align:right;flex:none">⭐ ${me.score}</div></div><div class=card>${body}</div></div>`}
+function wallUI(P){const sub=P.phase=='lobby'?'Waiting to start':P.phase=='intro'?P.title:P.phase=='contract'?'The contract…':P.phase=='end'?'Final: '+pt(P.final)+' pts ('+usd(P.final)+')':P.label;
+return`<div class="wrap wallpage"><div class=logo style="font-size:40px">THE WALL</div><p class=sub>Room ${room} · ${esc(sub)}</p><canvas id=wc></canvas><div class=card style="max-width:560px;margin:16px auto">${bankBar(P.bank,P.reserve)}${P.kind=='q'&&P.res&&P.res.ok&&P.phase!='question'?`<div class="msg g">✅ Correct answer! +${pt(P.res.bonus)} pts (${usd(P.res.bonus)}) for the group</div>`:''}${P.phase=='dropped'?netMsg(P):P.phase=='end'?endPanel(P):''}</div></div>`}
+
+const onWallMsg=e=>{if(e.data&&e.data.wallmsg&&e.source===wallWin)hostRecv(e.data.wallmsg)};
+function openWall(){const w=window.open(location.href.split('?')[0]+'?wall='+room+'&win=1','wall','width=1000,height=780');
+if(w){wallWin=w;if(!EMB)addEventListener('message',onWallMsg);setTimeout(bcast,1200)}else alert('Your browser blocked the pop-up. The wall is shown live on this page.')}
+function testMode(){const base=location.href.split('?')[0],rm='TEST'+(10+Math.floor(Math.random()*90));
+const seats=[['host','Host (teacher)'],['wall','Wall window'],['stage','Ana Reyes'],['stage','Ben Cruz'],['stage','Carla Santos'],['stage','Dino Garcia'],['iso','Eli Mercado (isolated)']];
+const tag={host:'Host',wall:'Wall',stage:'Stage student',iso:'Isolated student'};
+document.body.innerHTML=`<div style="padding:12px 16px;display:flex;gap:12px;align-items:center;flex-wrap:wrap"><b style="font-size:20px">THE WALL · test lab</b><span class=pill>Room ${rm}</span><span class=sub style="margin:0">All 7 screens on one page. Start in the Host panel; the sample questions are loaded.</span><button class=btn onclick="location.reload()">Restart lab</button><a class="btn ghost" style="text-decoration:none" href="${base}">Exit</a></div>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(400px,1fr));gap:12px;padding:0 12px 20px">${seats.map(([r,n],i)=>`<div><div style="font-weight:700;margin:0 0 4px 4px">${tag[r]}${r=='host'||r=='wall'?'':' · '+n}</div><iframe style="width:100%;height:680px;border:1px solid rgba(96,165,250,.5);box-shadow:0 0 24px rgba(37,99,235,.4);border-radius:14px;background:#040a1c" src="${base}?uid=t${i}&auto=${r}&room=${rm}&name=${encodeURIComponent(n)}"></iframe></div>`).join('')}</div>`;
+addEventListener('message',e=>{if(!e.data||!e.data.wallmsg)return;document.querySelectorAll('iframe').forEach(f=>{if(f.contentWindow!==e.source)f.contentWindow.postMessage(e.data,'*')})})}
+const qp=new URLSearchParams(location.search);
+if(qp.get('test'))testMode();
+else if(qp.get('auto')){room=(qp.get('room')||'TEST').toUpperCase();pick(qp.get('auto'),qp.get('name')||'x')}
+else if(qp.get('wall')){room=qp.get('wall').toUpperCase();role='wall';pname='wall';open_(room).then(()=>{send(joinMsg());timer=setInterval(()=>{if(!ST)send(joinMsg())},1500);render()})}
+else home();
+</script></body></html>
